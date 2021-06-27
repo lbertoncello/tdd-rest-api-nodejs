@@ -8,7 +8,9 @@
     "lint": "eslint src/** test/** --fix --ext .js,.jsx",
     "test": "jest",
     "secure-mode": "jest --watch --verbose=true",
-    "postinstall": "husky install"
+    "postinstall": "husky install",
+    "cz": "cz",
+    "cz-init": "commitizen init cz-conventional-changelog --yarn --dev --exact"
   },
   "description": "Exemplo de API REST feita em Node.js utilizando TDD",
   "main": "server.js",
@@ -17,6 +19,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/jest": "^26.0.23",
+    "cz-conventional-changelog": "3.3.0",
     "eslint": "^7.29.0",
     "husky": "^6.0.0",
     "jest": "^27.0.5",
@@ -29,6 +32,11 @@
   "husky": {
     "hooks": {
       "pre-commit": "yarn prettier-format && yarn lint"
+    }
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
     }
   }
 }
