@@ -12,6 +12,7 @@ consign({
 	verbose: false,
 }).
 	include('./config/middlewares').
+	then('./services').
 	then('./routes').
 	then('./config/routes').
 	into(app);
@@ -24,14 +25,14 @@ app.get('/', (req, res) => {
 /*
  * Log de dados do DB
  */
-app.db.
-	on('query', (query) => {
-		console.log({
-			sql: query.sql,
-			bindings: query.bindings ? query.bindings.join(', ') : '',
-		});
-	}).
-	on('query-response', (response) => console.log(response)).
-	on('error', (error) => console.error(error));
+// app.db.
+// 	on('query', (query) => {
+// 		console.log({
+// 			sql: query.sql,
+// 			bindings: query.bindings ? query.bindings.join(', ') : '',
+// 		});
+// 	}).
+// 	on('query-response', (response) => console.log(response)).
+// 	on('error', (error) => console.error(error));
 
 module.exports = app;
