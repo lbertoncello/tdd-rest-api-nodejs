@@ -6,7 +6,13 @@ module.exports = (app) => {
 	const save = (user) => {
 		if (!user.name) {
 			return {
-				error: 'Nome é um atributo obrigatório.',
+				error: '"name" é um atributo obrigatório.',
+			};
+		}
+
+		if (!user.mail) {
+			return {
+				error: '"mail" é um atributo obrigatório.',
 			};
 		}
 
