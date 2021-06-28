@@ -20,4 +20,18 @@ app.get('/', (req, res) => {
 	res.status(200).send();
 });
 
+// TODO trocar o logger padrão para alguma lib mais eficiente
+/*
+ * Log de dados do DB
+ */
+app.db.
+	on('query', (query) => {
+		console.log({
+			sql: query.sql,
+			bindings: query.bindings ? query.bindings.join(', ') : '',
+		});
+	}).
+	on('query-response', (response) => console.log(response)).
+	on('error', (error) => console.error(error));
+
 module.exports = app;
