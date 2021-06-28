@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  postgresql:
+    image: postgres:13.3
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: "admin"
+      POSTGRES_USER: "admin"
+      POSTGRES_DB: "barriga"
+
