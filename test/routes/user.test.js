@@ -80,3 +80,7 @@ test('Não deve inserir usuário com email já existente', () => {
 			expect(res.body.error).toBe('Já existe um usuário com esse email.');
 		});
 });
+
+afterAll(async () => {
+	await app.db.destroy();
+});
