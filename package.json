@@ -27,6 +27,7 @@
     "supertest": "^6.1.3"
   },
   "dependencies": {
+    "consign": "^0.1.6",
     "express": "^4.17.1"
   },
   "husky": {
