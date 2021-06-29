@@ -15,6 +15,10 @@ module.exports = (app) => {
 	};
 
 	const save = (account) => {
+		if (!account.name) {
+			return { error: '"name" é um atributo obrigatório.' };
+		}
+
 		return app.db(TABLE_NAME).
 			insert(account, '*');
 	};
