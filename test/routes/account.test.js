@@ -75,3 +75,16 @@ test('Deve alterar uma conta', async () => {
 	expect(res.status).toBe(200);
 	expect(res.body.name).toBe('Acc Updated');
 });
+
+test('Devo remover uma conta', async () => {
+	const account = await app.db('accounts').
+		insert({
+			name: 'Acc To Remove',
+			user_id: user.id,
+		}, [ 'id' ]);
+
+	const res = await request(app).
+		delete(`${MAIN_ROUTE}/${account[0].id}`);
+
+	expect(res.status).toBe(204);
+});

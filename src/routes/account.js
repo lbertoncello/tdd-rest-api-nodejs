@@ -30,10 +30,17 @@ module.exports = (app) => {
 		return res.status(200).json(result[0]);
 	};
 
+	const remove = async (req, res) => {
+		await app.services.account.remove(req.params.id);
+
+		return res.status(204).send();
+	};
+
 	return {
 		findAll,
 		find,
 		create,
 		update,
+		remove,
 	};
 };
