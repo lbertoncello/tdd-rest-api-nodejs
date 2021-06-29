@@ -6,5 +6,6 @@ module.exports = (app) => {
 		post(app.routes.account.create);
 
 	app.route(`${ROUTE}/:id`).
-		get(app.routes.account.find);
+		get(app.routes.account.find).
+		put(app.routes.account.update);
 };

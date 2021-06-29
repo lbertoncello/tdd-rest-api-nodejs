@@ -21,10 +21,19 @@ module.exports = (app) => {
 		return res.status(201).json(result[0]);
 	};
 
+	const update = async (req, res) => {
+		const result = await app.services.account.update(
+			req.params.id,
+			req.body,
+		);
+
+		return res.status(200).json(result[0]);
+	};
 
 	return {
 		findAll,
 		find,
 		create,
+		update,
 	};
 };

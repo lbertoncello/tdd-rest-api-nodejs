@@ -19,9 +19,16 @@ module.exports = (app) => {
 			insert(account, '*');
 	};
 
+	const update = (id, account) => {
+		return app.db(TABLE_NAME).
+			where({ id }).
+			update(account, '*');
+	};
+
 	return {
 		findAll,
 		find,
 		save,
+		update,
 	};
 };
