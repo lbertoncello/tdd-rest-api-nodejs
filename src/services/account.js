@@ -1,3 +1,5 @@
+const ValidationError = require('../errors/ValidationError');
+
 const TABLE_NAME = 'accounts';
 
 module.exports = (app) => {
@@ -16,7 +18,7 @@ module.exports = (app) => {
 
 	const save = (account) => {
 		if (!account.name) {
-			return { error: '"name" é um atributo obrigatório.' };
+			throw new ValidationError('"name" é um atributo obrigatório.');
 		}
 
 		return app.db(TABLE_NAME).
