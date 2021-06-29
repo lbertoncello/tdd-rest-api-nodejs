@@ -4,6 +4,10 @@ const app = require('../../src/app');
 const mail = `${Date.now()}@mail.com`;
 const name = 'Walter Mitty';
 
+afterAll(async () => {
+	await app.db.destroy();
+});
+
 test('Deve listar todos os usuários', () => {
 	return request(app).
 		get('/user').
@@ -79,8 +83,4 @@ test('Não deve inserir usuário com email já existente', () => {
 			expect(res.status).toBe(400);
 			expect(res.body.error).toBe('Já existe um usuário com esse email.');
 		});
-});
-
-afterAll(async () => {
-	await app.db.destroy();
 });

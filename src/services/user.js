@@ -1,6 +1,7 @@
 module.exports = (app) => {
 	const findAll = (filter = {}) => {
-		return app.db('users').where(filter).
+		return app.db('users').
+			where(filter).
 			select();
 	};
 
@@ -23,7 +24,8 @@ module.exports = (app) => {
 			return { error: 'Já existe um usuário com esse email.' };
 		}
 
-		return app.db('users').insert(user, '*');
+		return app.db('users').
+			insert(user, '*');
 	};
 
 	return {

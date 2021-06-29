@@ -14,6 +14,10 @@ beforeAll(async () => {
 	user = { ...res[0] };
 });
 
+afterAll(async () => {
+	await app.db.destroy();
+});
+
 test('Deve inserir uma conta com sucesso', () => {
 	return request(app).
 		post(MAIN_ROUTE).
@@ -41,6 +45,18 @@ test('Deve listar todas as contas', async () => {
 	expect(res.body.length).toBeGreaterThan(0);
 });
 
-afterAll(async () => {
-	await app.db.destroy();
+
+test('Deve retornar uma conta por id', async () => {
+	const account = await app.db('accounts').
+		insert({
+			name: 'Acc By Id',
+			user_id: user.id,
+		}, [ 'id' ]);
+
+	const res = await request(app).
+		get(`${MAIN_ROUTE}/${account[0].id}`);
+
+	expect(res.status).toBe(200);
+	expect(res.body.name).toBe('Acc By Id');
+	expect(res.body.user_id).toBe(user.id);
 });

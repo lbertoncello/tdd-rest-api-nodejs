@@ -5,6 +5,12 @@ module.exports = (app) => {
 		return res.status(200).json(result);
 	};
 
+	const find = async (req, res) => {
+		const result = await app.services.account.find({ id: req.params.id });
+
+		return res.status(200).json(result);
+	};
+
 	const create = async (req, res) => {
 		const result = await app.services.account.save(req.body);
 
@@ -18,6 +24,7 @@ module.exports = (app) => {
 
 	return {
 		findAll,
+		find,
 		create,
 	};
 };
