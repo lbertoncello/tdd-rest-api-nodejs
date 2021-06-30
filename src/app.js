@@ -15,11 +15,9 @@ consign({
 	then('./services').
 	then('./routes').
 	then('./config/routes').
+	then('./config/error-handlers').
 	into(app);
 
-app.get('/', (req, res) => {
-	res.status(200).send();
-});
 
 // TODO trocar o logger padrão para alguma lib mais eficiente
 /*

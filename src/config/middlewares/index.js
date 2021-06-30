@@ -1,5 +1,8 @@
-const depedencies = require('./dependencies');
+const express = require('express');
 
 module.exports = (app) => {
-	depedencies(app);
+	app.use(express.json());
+	app.use(express.urlencoded({
+		extended: true,
+	}));
 };
