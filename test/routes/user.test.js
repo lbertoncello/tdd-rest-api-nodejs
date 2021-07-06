@@ -3,6 +3,7 @@ const app = require('../../src/app');
 
 const mail = `${Date.now()}@mail.com`;
 const name = 'Walter Mitty';
+const passwd = 'abc123';
 
 afterAll(async () => {
 	await app.db.destroy();
@@ -23,7 +24,7 @@ test('Deve inserir usuário com sucesso', () => {
 		send({
 			name: name,
 			mail: mail,
-			passwd: 'abc123',
+			passwd: passwd,
 		}).
 		then((res) => {
 			expect(res.status).toBe(201);
@@ -32,12 +33,30 @@ test('Deve inserir usuário com sucesso', () => {
 		});
 });
 
+test('Deve armazenar senha criptografada', async () => {
+	const res = await request(app).
+		post('/user').
+		send({
+			name: name,
+			mail: `${Date.now()}@mail.com`,
+			passwd: passwd,
+		});
+
+	expect(res.status).toBe(201);
+
+	const { id } = res.body;
+	const userDb = await app.services.user.findOne({ id });
+
+	expect(userDb.passwd).not.toBeUndefined();
+	expect(userDb.passwd).not.toBe(passwd);
+});
+
 test('Não deve inserir usuário sem nome', () => {
 	return request(app).
 		post('/user').
 		send({
 			mail: mail,
-			passwd: 'abc123',
+			passwd: passwd,
 		}).
 		then((res) => {
 			expect(res.status).toBe(400);
@@ -50,7 +69,7 @@ test('Não deve inserir usuário sem email', async () => {
 		post('/user').
 		send({
 			name: name,
-			passwd: 'abc123',
+			passwd: passwd,
 		});
 
 	expect(res.status).toBe(400);
@@ -78,7 +97,7 @@ test('Não deve inserir usuário com email já existente', () => {
 		send({
 			name: name,
 			mail: mail,
-			passwd: 'abc123',
+			passwd: passwd,
 		}).
 		then((res) => {
 			expect(res.status).toBe(400);

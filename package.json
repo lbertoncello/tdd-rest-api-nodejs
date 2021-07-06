@@ -27,6 +27,7 @@
     "supertest": "^6.1.3"
   },
   "dependencies": {
+    "bcrypt-nodejs": "^0.0.3",
     "consign": "^0.1.6",
     "express": "^4.17.1",
     "knex": "^0.95.6",
