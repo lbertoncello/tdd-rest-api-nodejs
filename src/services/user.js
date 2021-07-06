@@ -4,7 +4,11 @@ module.exports = (app) => {
 	const findAll = (filter = {}) => {
 		return app.db('users').
 			where(filter).
-			select();
+			select([
+				'id',
+				'name',
+				'mail',
+			]);
 	};
 
 	const save = async (user) => {
@@ -27,7 +31,11 @@ module.exports = (app) => {
 		}
 
 		return app.db('users').
-			insert(user, '*');
+			insert(user, [
+				'id',
+				'name',
+				'mail',
+			]);
 	};
 
 	return {

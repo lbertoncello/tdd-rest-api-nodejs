@@ -28,6 +28,7 @@ test('Deve inserir usuário com sucesso', () => {
 		then((res) => {
 			expect(res.status).toBe(201);
 			expect(res.body.name).toBe(name);
+			expect(res.body).not.toHaveProperty('passwd');
 		});
 });
 
