@@ -6,6 +6,7 @@
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
     "lint": "eslint src/** test/** --fix --ext .js,.jsx",
+    "migrate": "knex migrate:latest --env test",
     "test": "jest --verbose=true",
     "secure-mode": "jest --watch --verbose=true",
     "postinstall": "husky install",
@@ -30,6 +31,7 @@
     "bcrypt-nodejs": "^0.0.3",
     "consign": "^0.1.6",
     "express": "^4.17.1",
+    "jwt-simple": "^0.5.6",
     "knex": "^0.95.6",
     "pg": "^8.6.0"
   },
