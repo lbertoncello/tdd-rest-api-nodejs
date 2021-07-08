@@ -11,7 +11,8 @@ consign({
 	cwd: 'src',
 	verbose: false,
 }).
-	include('./config/middlewares').
+	include('./config/passport.js').
+	then('./config/middlewares.js').
 	then('./services').
 	then('./routes').
 	then('./config/routes').
