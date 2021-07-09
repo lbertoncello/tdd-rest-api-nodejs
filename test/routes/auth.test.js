@@ -2,9 +2,27 @@ const request = require('supertest');
 
 const app = require('../../src/app');
 
+const SIGNUP_ROUTE = '/auth/signup';
 
 afterAll(async () => {
 	await app.db.destroy();
+});
+
+test('Deve criar usuário via signup', async () => {
+	const name = 'Walter';
+	const mail = `${Date.now()}@mail.com`;
+	const passwd = '123456';
+
+	const res = await request(app).post(SIGNUP_ROUTE).
+		send({
+			name,
+			mail,
+			passwd,
+		});
+
+	expect(res.status).toBe(201);
+	expect(res.body.name).toBe('Walter');
+	expect(res.body).not.toHaveProperty('passwd');
 });
 
 test('Deve receber token ao logar', async () => {
