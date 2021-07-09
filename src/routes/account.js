@@ -1,5 +1,9 @@
+const express = require('express');
+
 module.exports = (app) => {
-	const findAll = async (req, res, next) => {
+	const router = express.Router();
+
+	router.get('/', async (req, res, next) => {
 		try {
 			const result = await app.services.account.findAll();
 
@@ -7,9 +11,19 @@ module.exports = (app) => {
 		} catch (error) {
 			next(error);
 		}
-	};
+	});
 
-	const find = async (req, res, next) => {
+	router.post('/', async (req, res, next) => {
+		try {
+			const result = await app.services.account.save(req.body);
+
+			res.status(201).json(result[0]);
+		} catch (error) {
+			next(error);
+		}
+	});
+
+	router.get('/:id', async (req, res, next) => {
 		try {
 			const result =
 				await app.services.account.find({ id: req.params.id });
@@ -18,19 +32,9 @@ module.exports = (app) => {
 		} catch (error) {
 			next(error);
 		}
-	};
+	});
 
-	const create = async (req, res, next) => {
-		try {
-			const result = await app.services.account.save(req.body);
-
-			res.status(201).json(result[0]);
-		} catch (error) {
-			next(error);
-		}
-	};
-
-	const update = async (req, res, next) => {
+	router.put('/:id', async (req, res, next) => {
 		try {
 			const result = await app.services.account.update(
 				req.params.id,
@@ -41,9 +45,9 @@ module.exports = (app) => {
 		} catch (error) {
 			next(error);
 		}
-	};
+	});
 
-	const remove = async (req, res, next) => {
+	router.delete('/:id', async (req, res, next) => {
 		try {
 			await app.services.account.remove(req.params.id);
 
@@ -51,13 +55,7 @@ module.exports = (app) => {
 		} catch (error) {
 			next(error);
 		}
-	};
+	});
 
-	return {
-		findAll,
-		find,
-		create,
-		update,
-		remove,
-	};
+	return router;
 };

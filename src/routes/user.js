@@ -1,5 +1,9 @@
+const express = require('express');
+
 module.exports = (app) => {
-	const findAll = async (req, res, next) => {
+	const router = express.Router();
+
+	router.get('/', async (req, res, next) => {
 		try {
 			const result = await app.services.user.findAll();
 
@@ -7,9 +11,9 @@ module.exports = (app) => {
 		} catch (error) {
 			next(error);
 		}
-	};
+	});
 
-	const create = async (req, res, next) => {
+	router.post('/', async (req, res, next) => {
 		try {
 			const result = await app.services.user.save(req.body);
 
@@ -17,10 +21,7 @@ module.exports = (app) => {
 		} catch (error) {
 			next(error);
 		}
-	};
+	});
 
-	return {
-		findAll,
-		create,
-	};
+	return router;
 };

@@ -15,8 +15,8 @@ consign({
 	then('./config/middlewares.js').
 	then('./services').
 	then('./routes').
-	then('./config/routes').
-	then('./config/error-handlers').
+	then('./config/router.js').
+	then('./config/error.js').
 	into(app);
 
 

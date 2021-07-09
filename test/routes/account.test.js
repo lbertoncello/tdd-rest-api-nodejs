@@ -4,7 +4,7 @@ const jwt = require('jwt-simple');
 const app = require('../../src/app');
 
 const secret = 'lHPj07alu7dpP4vofTB5YAwwJ1iCtnq0';
-const MAIN_ROUTE = '/account';
+const MAIN_ROUTE = '/v1/account';
 let user;
 
 beforeAll(async () => {

@@ -79,7 +79,7 @@ test('Não deve autenticar usuário com senha errada', async () => {
 });
 
 test('Não deve acessar uma rota protegida sem token', async () => {
-	const res = await request(app).get('/user');
+	const res = await request(app).get('/v1/user');
 
 	expect(res.status).toBe(401);
 });
