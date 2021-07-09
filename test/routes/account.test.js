@@ -1,6 +1,9 @@
 const request = require('supertest');
+const jwt = require('jwt-simple');
+
 const app = require('../../src/app');
 
+const secret = 'lHPj07alu7dpP4vofTB5YAwwJ1iCtnq0';
 const MAIN_ROUTE = '/account';
 let user;
 
@@ -12,6 +15,7 @@ beforeAll(async () => {
 	});
 
 	user = { ...res[0] };
+	user.token = jwt.encode(user, secret);
 });
 
 afterAll(async () => {
@@ -21,6 +25,7 @@ afterAll(async () => {
 test('Deve inserir uma conta com sucesso', () => {
 	return request(app).
 		post(MAIN_ROUTE).
+		set('Authorization', `Bearer ${user.token}`).
 		send({
 			name: 'Acc #1',
 			user_id: user.id,
@@ -34,6 +39,7 @@ test('Deve inserir uma conta com sucesso', () => {
 test('Não deve inserir uma conta sem nome', () => {
 	return request(app).
 		post(MAIN_ROUTE).
+		set('Authorization', `Bearer ${user.token}`).
 		send({
 			user_id: user.id,
 		}).
@@ -57,7 +63,8 @@ test('Deve listar todas as contas', async () => {
 	});
 
 	const res = await request(app).
-		get(MAIN_ROUTE);
+		get(MAIN_ROUTE).
+		set('Authorization', `Bearer ${user.token}`);
 
 	expect(res.status).toBe(200);
 	expect(res.body.length).toBeGreaterThan(0);
@@ -75,7 +82,8 @@ test('Deve retornar uma conta por id', async () => {
 		}, [ 'id' ]);
 
 	const res = await request(app).
-		get(`${MAIN_ROUTE}/${account[0].id}`);
+		get(`${MAIN_ROUTE}/${account[0].id}`).
+		set('Authorization', `Bearer ${user.token}`);
 
 	expect(res.status).toBe(200);
 	expect(res.body.name).toBe('Acc By Id');
@@ -95,6 +103,7 @@ test('Deve alterar uma conta', async () => {
 
 	const res = await request(app).
 		put(`${MAIN_ROUTE}/${account[0].id}`).
+		set('Authorization', `Bearer ${user.token}`).
 		send({ name: 'Acc Updated' });
 
 	expect(res.status).toBe(200);
@@ -113,7 +122,8 @@ test('Devo remover uma conta', async () => {
 		}, [ 'id' ]);
 
 	const res = await request(app).
-		delete(`${MAIN_ROUTE}/${account[0].id}`);
+		delete(`${MAIN_ROUTE}/${account[0].id}`).
+		set('Authorization', `Bearer ${user.token}`);
 
 	expect(res.status).toBe(204);
 });
