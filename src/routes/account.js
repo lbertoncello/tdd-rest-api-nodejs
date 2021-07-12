@@ -15,7 +15,10 @@ module.exports = (app) => {
 
 	router.post('/', async (req, res, next) => {
 		try {
-			const result = await app.services.account.save(req.body);
+			const result = await app.services.account.save({
+				...req.body,
+				user_id: req.user.id,
+			});
 
 			res.status(201).json(result[0]);
 		} catch (error) {

@@ -28,7 +28,6 @@ test('Deve inserir uma conta com sucesso', () => {
 		set('Authorization', `Bearer ${user.token}`).
 		send({
 			name: 'Acc #1',
-			user_id: user.id,
 		}).
 		then((res) => {
 			expect(res.status).toBe(201);
@@ -40,9 +39,7 @@ test('Não deve inserir uma conta sem nome', () => {
 	return request(app).
 		post(MAIN_ROUTE).
 		set('Authorization', `Bearer ${user.token}`).
-		send({
-			user_id: user.id,
-		}).
+		send({}).
 		then((res) => {
 			expect(res.status).toBe(400);
 			expect(res.body.error).toBe('"name" é um atributo obrigatório.');
