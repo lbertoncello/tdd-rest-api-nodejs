@@ -16,9 +16,18 @@ module.exports = (app) => {
 			first();
 	};
 
-	const save = (account) => {
+	const save = async (account) => {
 		if (!account.name) {
 			throw new ValidationError('"name" é um atributo obrigatório.');
+		}
+
+		const accDb = await find({
+			name: account.name,
+			user_id: account.user_id,
+		});
+
+		if (accDb) {
+			throw new ValidationError('Já existe uma conta com este nome.');
 		}
 
 		return app.db(TABLE_NAME).

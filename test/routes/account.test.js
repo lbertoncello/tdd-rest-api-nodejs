@@ -55,10 +55,24 @@ test('Não deve inserir uma conta sem nome', () => {
 		});
 });
 
-test.skip(
+test(
 	'Não deve inserir uma conta de nome duplicado para o mesmo usuário',
-	() => {
-		return null;
+	async () => {
+		await app.db('accounts').insert([
+			{
+				name: 'Acc Duplicada',
+				user_id: user.id,
+			},
+		]);
+
+		const res = await request(app).
+			post(MAIN_ROUTE).
+			set('Authorization', `Bearer ${user.token}`).
+			send({ name: 'Acc Duplicada' });
+
+
+		expect(res.status).toBe(400);
+		expect(res.body.error).toBe('Já existe uma conta com este nome.');
 	},
 );
 
