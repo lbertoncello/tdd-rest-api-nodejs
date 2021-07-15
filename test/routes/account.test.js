@@ -113,8 +113,19 @@ test('Deve retornar uma conta por id', async () => {
 	expect(res.body.user_id).toBe(user.id);
 });
 
-test.skip('Não deve retornar uma conta de outro usuário', () => {
-	return null;
+test('Não deve retornar uma conta de outro usuário', async () => {
+	const acc = await app.db('accounts').
+		insert({
+			name: 'Acc User #2',
+			user_id: user2.id,
+		}, [ 'id' ]);
+
+	const res = await request(app).
+		get(`${MAIN_ROUTE}/${acc[0].id}`).
+		set('Authorization', `Bearer ${user.token}`);
+
+	expect(res.status).toBe(403);
+	expect(res.body.error).toBe('Este recurso não pertecene ao usuário.');
 });
 
 test('Deve alterar uma conta', async () => {
@@ -133,8 +144,8 @@ test('Deve alterar uma conta', async () => {
 	expect(res.body.name).toBe('Acc Updated');
 });
 
-test.skip('Não deve alterar uma conta de outro usuário', () => {
-	return null;
+test.skip('Não deve alterar uma conta de outro usuário', async () => {
+
 });
 
 test('Devo remover uma conta', async () => {

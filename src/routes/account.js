@@ -31,6 +31,12 @@ module.exports = (app) => {
 			const result =
 				await app.services.account.find({ id: req.params.id });
 
+			if (result.user_id !== req.user.id) {
+				res.status(403).json({
+					error: 'Este recurso não pertecene ao usuário.',
+				});
+			}
+
 			res.status(200).json(result);
 		} catch (error) {
 			next(error);
