@@ -6,8 +6,9 @@ const app = require('../../src/app');
 const secret = 'lHPj07alu7dpP4vofTB5YAwwJ1iCtnq0';
 const MAIN_ROUTE = '/v1/account';
 let user;
+let user2;
 
-beforeAll(async () => {
+beforeEach(async () => {
 	const res = await app.services.user.save({
 		name: 'User Account',
 		mail: `${Date.now()}@mail.com`,
@@ -16,6 +17,14 @@ beforeAll(async () => {
 
 	user = { ...res[0] };
 	user.token = jwt.encode(user, secret);
+
+	const res2 = await app.services.user.save({
+		name: 'User Account 2',
+		mail: `${Date.now()}@mail.com`,
+		passwd: 'abc123',
+	});
+
+	user2 = { ...res2[0] };
 });
 
 afterAll(async () => {
@@ -53,22 +62,25 @@ test.skip(
 	},
 );
 
-test('Deve listar todas as contas', async () => {
-	await app.db('accounts').insert({
-		name: 'Acc list',
-		user_id: user.id,
-	});
+test('Deve listar apenas as contas do usuário', async () => {
+	await app.db('accounts').insert([
+		{
+			name: 'Acc User #1',
+			user_id: user.id,
+		},
+		{
+			name: 'Acc User #2',
+			user_id: user2.id,
+		},
+	]);
 
 	const res = await request(app).
 		get(MAIN_ROUTE).
 		set('Authorization', `Bearer ${user.token}`);
 
 	expect(res.status).toBe(200);
-	expect(res.body.length).toBeGreaterThan(0);
-});
-
-test.skip('Deve listar apenas as contas do usuário', () => {
-	return null;
+	expect(res.body.length).toBe(1);
+	expect(res.body[0].name).toBe('Acc User #1');
 });
 
 test('Deve retornar uma conta por id', async () => {
