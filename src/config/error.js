@@ -12,6 +12,8 @@ module.exports = (app) => {
 
 		if (name === 'ValidationError') {
 			res.status(400).json({ error: message });
+		} else if (name === 'ForbiddenResourceError') {
+			res.status(403).json({ error: message });
 		} else {
 			res.status(500).json({
 				name,

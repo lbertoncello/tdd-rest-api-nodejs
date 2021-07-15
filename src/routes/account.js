@@ -1,7 +1,25 @@
 const express = require('express');
 
+const ForbiddenResourceError = require('../errors/ForbiddenResource');
+
 module.exports = (app) => {
 	const router = express.Router();
+
+	router.param('id', async (req, res, next) => {
+		try {
+			const account = await app.services.account.find({
+				id: req.params.id,
+			});
+
+			if (account.user_id !== req.user.id) {
+				throw new ForbiddenResourceError();
+			}
+
+			next();
+		} catch (error) {
+			next(error);
+		}
+	});
 
 	router.get('/', async (req, res, next) => {
 		try {
@@ -30,12 +48,6 @@ module.exports = (app) => {
 		try {
 			const result =
 				await app.services.account.find({ id: req.params.id });
-
-			if (result.user_id !== req.user.id) {
-				res.status(403).json({
-					error: 'Este recurso não pertecene ao usuário.',
-				});
-			}
 
 			res.status(200).json(result);
 		} catch (error) {
