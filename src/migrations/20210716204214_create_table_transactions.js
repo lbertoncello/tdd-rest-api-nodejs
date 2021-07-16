@@ -2,7 +2,7 @@
 exports.up = (knex) => {
 	return knex.schema.createTable('transactions', (t) => {
 		t.increments('id').primary();
-		t.string('descriptions').notNull();
+		t.string('description').notNull();
 		t.enu('type', [ 'I', 'O' ]).notNull();
 		t.date('date').notNull();
 		t.decimal('ammount', 15, 2).notNull();
