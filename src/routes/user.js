@@ -1,22 +1,27 @@
+const express = require('express');
+
 module.exports = (app) => {
-	const findAll = async (req, res) => {
-		const result = await app.services.user.findAll();
+	const router = express.Router();
 
-		res.status(200).json(result);
-	};
+	router.get('/', async (req, res, next) => {
+		try {
+			const result = await app.services.user.findAll();
 
-	const create = async (req, res) => {
-		const result = await app.services.user.save(req.body);
-
-		if (result.error) {
-			return res.status(400).json(result);
+			res.status(200).json(result);
+		} catch (error) {
+			next(error);
 		}
+	});
 
-		res.status(201).json(result[0]);
-	};
+	router.post('/', async (req, res, next) => {
+		try {
+			const result = await app.services.user.save(req.body);
 
-	return {
-		findAll,
-		create,
-	};
+			res.status(201).json(result[0]);
+		} catch (error) {
+			next(error);
+		}
+	});
+
+	return router;
 };
