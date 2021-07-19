@@ -14,6 +14,19 @@ module.exports = (app) => {
 		}
 	});
 
+
+	router.get('/:id', async (req, res, next) => {
+		try {
+			const result =
+				await app.services.transaction.findOne({ id: req.params.id });
+
+			res.status(200).json(result);
+		} catch (error) {
+			console.error(error);
+			next(error);
+		}
+	});
+
 	router.post('/', async (req, res, next) => {
 		try {
 			const result = await app.services.transaction.save(req.body);

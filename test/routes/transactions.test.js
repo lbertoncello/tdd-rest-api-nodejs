@@ -91,3 +91,21 @@ test('Deve inserir uma transação com sucesso', async () => {
 	expect(res.status).toBe(201);
 	expect(res.body.acc_id).toBe(accountUser1.id);
 });
+
+test('Deve retornar uma transação por ID', async () => {
+	const data = await app.db('transactions').insert({
+		description: 'T ID',
+		date: new Date(),
+		ammount: 100,
+		type: 'I',
+		acc_id: accountUser1.id,
+	}, [ 'id' ]);
+
+	const res = await request(app).
+		get(`${MAIN_ROUTE}/${data[0].id}`).
+		set('Authorization', `Bearer ${user1.token}`);
+
+	expect(res.status).toBe(200);
+	expect(res.body.id).toBe(data[0].id);
+	expect(res.body.description).toBe('T ID');
+});
