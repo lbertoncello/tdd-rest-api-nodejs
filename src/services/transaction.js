@@ -7,7 +7,13 @@ module.exports = (app) => {
 			select();
 	};
 
+	const save = (transaction) => {
+		return app.db('transactions').
+			insert(transaction, '*');
+	};
+
 	return {
 		find,
+		save,
 	};
 };
