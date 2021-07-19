@@ -109,3 +109,39 @@ test('Deve retornar uma transação por ID', async () => {
 	expect(res.body.id).toBe(data[0].id);
 	expect(res.body.description).toBe('T ID');
 });
+
+test('Devo alterar uma transação', async () => {
+	const data = await app.db('transactions').insert({
+		description: 'T old',
+		date: new Date(),
+		ammount: 100,
+		type: 'I',
+		acc_id: accountUser1.id,
+	}, [ 'id' ]);
+
+	const res = await request(app).
+		put(`${MAIN_ROUTE}/${data[0].id}`).
+		set('Authorization', `Bearer ${user1.token}`).
+		send({
+			description: 'T updated',
+		});
+
+	expect(res.status).toBe(200);
+	expect(res.body.description).toBe('T updated');
+});
+
+test('Devo remover uma transação', async () => {
+	const data = await app.db('transactions').insert({
+		description: 'T delete',
+		date: new Date(),
+		ammount: 100,
+		type: 'I',
+		acc_id: accountUser1.id,
+	}, [ 'id' ]);
+
+	const res = await request(app).
+		delete(`${MAIN_ROUTE}/${data[0].id}`).
+		set('Authorization', `Bearer ${user1.token}`);
+
+	expect(res.status).toBe(204);
+});
