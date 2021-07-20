@@ -147,6 +147,26 @@ test('Devo alterar uma transação', async () => {
 	expect(res.body.description).toBe('T updated');
 });
 
+test('Não Devo alterar uma transação de outro usuário', async () => {
+	const data = await app.db('transactions').insert({
+		description: 'T old',
+		date: new Date(),
+		ammount: 100,
+		type: 'I',
+		acc_id: accountUser2.id,
+	}, [ 'id' ]);
+
+	const res = await request(app).
+		put(`${MAIN_ROUTE}/${data[0].id}`).
+		set('Authorization', `Bearer ${user1.token}`).
+		send({
+			description: 'T updated',
+		});
+
+	expect(res.status).toBe(403);
+	expect(res.body.error).toBe('Este recurso não pertecene ao usuário.');
+});
+
 test('Devo remover uma transação', async () => {
 	const data = await app.db('transactions').insert({
 		description: 'T delete',
