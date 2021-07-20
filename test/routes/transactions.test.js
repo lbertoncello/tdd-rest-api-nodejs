@@ -90,6 +90,41 @@ test('Deve inserir uma transação com sucesso', async () => {
 
 	expect(res.status).toBe(201);
 	expect(res.body.acc_id).toBe(accountUser1.id);
+	expect(res.body.ammount).toBe('100.00');
+});
+
+test('Transações de entrada devem ser positivas', async () => {
+	const res = await request(app).
+		post(MAIN_ROUTE).
+		set('Authorization', `Bearer ${user1.token}`).
+		send({
+			description: 'New T',
+			date: new Date(),
+			ammount: -100,
+			type: 'I',
+			acc_id: accountUser1.id,
+		});
+
+	expect(res.status).toBe(201);
+	expect(res.body.acc_id).toBe(accountUser1.id);
+	expect(res.body.ammount).toBe('100.00');
+});
+
+test('Transações de saída devem ser negativas', async () => {
+	const res = await request(app).
+		post(MAIN_ROUTE).
+		set('Authorization', `Bearer ${user1.token}`).
+		send({
+			description: 'New T',
+			date: new Date(),
+			ammount: 100,
+			type: 'O',
+			acc_id: accountUser1.id,
+		});
+
+	expect(res.status).toBe(201);
+	expect(res.body.acc_id).toBe(accountUser1.id);
+	expect(res.body.ammount).toBe('-100.00');
 });
 
 test('Deve retornar uma transação por ID', async () => {
