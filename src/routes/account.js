@@ -17,6 +17,7 @@ module.exports = (app) => {
 
 			next();
 		} catch (error) {
+			console.error(error);
 			next(error);
 		}
 	});
