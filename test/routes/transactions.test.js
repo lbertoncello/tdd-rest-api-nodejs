@@ -110,6 +110,23 @@ test('Deve retornar uma transação por ID', async () => {
 	expect(res.body.description).toBe('T ID');
 });
 
+test('Não devo retornar uma transação de outro usuário', async () => {
+	const data = await app.db('transactions').insert({
+		description: 'T ID',
+		date: new Date(),
+		ammount: 100,
+		type: 'I',
+		acc_id: accountUser2.id,
+	}, [ 'id' ]);
+
+	const res = await request(app).
+		get(`${MAIN_ROUTE}/${data[0].id}`).
+		set('Authorization', `Bearer ${user1.token}`);
+
+	expect(res.status).toBe(403);
+	expect(res.body.error).toBe('Este recurso não pertecene ao usuário.');
+});
+
 test('Devo alterar uma transação', async () => {
 	const data = await app.db('transactions').insert({
 		description: 'T old',
