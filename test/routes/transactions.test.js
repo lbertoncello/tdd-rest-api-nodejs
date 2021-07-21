@@ -49,6 +49,10 @@ beforeAll(async () => {
 	[ accountUser1, accountUser2 ] = accounts;
 });
 
+afterAll(async () => {
+	await app.db.destroy();
+});
+
 test('Deve listar apenas as transações do usuário', async () => {
 	await app.db('transactions').insert([
 		{
