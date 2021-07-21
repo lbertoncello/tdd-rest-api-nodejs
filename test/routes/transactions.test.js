@@ -127,6 +127,52 @@ test('Transações de saída devem ser negativas', async () => {
 	expect(res.body.ammount).toBe('-100.00');
 });
 
+test('Não deve inserir uma transação sem descrição', async () => {
+	const res = await request(app).
+		post(MAIN_ROUTE).
+		set('Authorization', `Bearer ${user1.token}`).
+		send({
+			date: new Date(),
+			ammount: 100,
+			type: 'I',
+			acc_id: accountUser1.id,
+		});
+
+	expect(res.status).toBe(400);
+	expect(res.body.error).toBe('Descrição é um atributo obrigatório.');
+});
+
+test('Não deve inserir uma transação sem valor', async () => {
+	const res = await request(app).
+		post(MAIN_ROUTE).
+		set('Authorization', `Bearer ${user1.token}`).
+		send({
+			description: 'New T',
+			date: new Date(),
+			type: 'I',
+			acc_id: accountUser1.id,
+		});
+
+	expect(res.status).toBe(400);
+	expect(res.body.error).toBe('Valor é um atributo obrigatório.');
+});
+
+test.skip('Não deve inserir uma transação sem data', async () => {
+
+});
+
+test.skip('Não deve inserir uma transação sem conta', async () => {
+
+});
+
+test.skip('Não deve inserir uma transação sem tipo', async () => {
+
+});
+
+test.skip('Não deve inserir uma transação com tipo inválido', async () => {
+
+});
+
 test('Deve retornar uma transação por ID', async () => {
 	const data = await app.db('transactions').insert({
 		description: 'T ID',

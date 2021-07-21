@@ -1,4 +1,5 @@
 const account = require('../routes/account');
+const ValidationError = require('../errors/ValidationError');
 
 module.exports = (app) => {
 	const find = (userId, filter = {}) => {
@@ -16,6 +17,14 @@ module.exports = (app) => {
 	};
 
 	const save = (transaction) => {
+		if (!transaction.description) {
+			throw new ValidationError('Descrição é um atributo obrigatório.');
+		}
+
+		if (!transaction.ammount) {
+			throw new ValidationError('Valor é um atributo obrigatório.');
+		}
+
 		const newTransaction = { ...transaction };
 
 		if ((transaction.type === 'I' && transaction.ammount < 0) ||
