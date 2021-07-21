@@ -309,3 +309,20 @@ test('Não deve remover uma transação de outro usuário', async () => {
 	expect(res.status).toBe(403);
 	expect(res.body.error).toBe('Este recurso não pertecene ao usuário.');
 });
+
+test('Não deve remover conta com transação', async () => {
+	await app.db('transactions').insert({
+		description: 'T delete',
+		date: new Date(),
+		ammount: 100,
+		type: 'I',
+		acc_id: accountUser1.id,
+	}, [ 'id' ]);
+
+	const res = await request(app).
+		delete(`/v1/account/${accountUser1.id}`).
+		set('Authorization', `Bearer ${user1.token}`);
+
+	expect(res.status).toBe(400);
+	expect(res.body.error).toBe('Essa conta possui transações associadas.');
+});
