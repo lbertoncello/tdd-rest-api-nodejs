@@ -13,10 +13,7 @@ module.exports = (app) => {
 			first();
 	};
 
-	const save = async (transfer) => {
-		/*
-			--- Início Validação ---
-		*/
+	const validate = async (transfer) => {
 		if (!transfer.description) {
 			throw new ValidationError('Descrição é um atributo obrigatório.');
 		}
@@ -55,10 +52,10 @@ module.exports = (app) => {
 				throw new ValidationError(`Conta #${acc.id} não pertence ao usuário.`);
 			}
 		});
+	};
 
-		/*
-			--- Fim Validação ---
-		*/
+	const save = async (transfer) => {
+		await validate(transfer);
 
 		const result = await app.db('transfers').
 			insert(transfer, '*');
@@ -89,6 +86,8 @@ module.exports = (app) => {
 	};
 
 	const update = async (id, transfer) => {
+		await validate(transfer);
+
 		const result = await app.db('transfers').
 			where({ id }).
 			update(transfer, '*');
