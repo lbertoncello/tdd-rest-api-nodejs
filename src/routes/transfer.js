@@ -43,5 +43,17 @@ module.exports = (app) => {
 		}
 	});
 
+	router.put('/:id', async (req, res, next) => {
+		try {
+			const result = await app.services.transfer.
+				update(req.params.id, req.body);
+
+			res.status(200).json(result[0]);
+		} catch (error) {
+			console.error(error);
+			next(error);
+		}
+	});
+
 	return router;
 };
