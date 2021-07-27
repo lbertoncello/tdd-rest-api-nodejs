@@ -15,6 +15,7 @@ module.exports = (app) => {
 		} else if (name === 'ForbiddenResourceError') {
 			res.status(403).json({ error: message });
 		} else {
+			console.error(message);
 			res.status(500).json({
 				name,
 				message,

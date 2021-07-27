@@ -344,3 +344,27 @@ describe('Ao tentar alterar uma transferência inválida...', () => {
 		),
 	);
 });
+
+describe('Ao remover transferência...', () => {
+	test('Deve retornar o status 204', async () => {
+		const res = await request(app).
+			delete(`${MAIN_ROUTE}/10000`).
+			set('Authorization', `Bearer ${TOKEN}`);
+
+		expect(res.status).toBe(204);
+	});
+
+	test('O registro deve ser apagado do banco', async () => {
+		const result = await app.db('transfers').
+			where({ id: 10000 });
+
+		expect(result).toHaveLength(0);
+	});
+
+	test('As transações associadas devem ter sido removidas', async () => {
+		const result = await app.db('transactions').
+			where({ transfer_id: 10000 });
+
+		expect(result).toHaveLength(0);
+	});
+});

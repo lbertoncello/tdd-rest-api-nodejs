@@ -73,5 +73,16 @@ module.exports = (app) => {
 		}
 	});
 
+	router.delete('/:id', async (req, res, next) => {
+		try {
+			await app.services.transfer.remove(req.params.id);
+
+			res.status(204).send();
+		} catch (error) {
+			console.error(error);
+			next(error);
+		}
+	});
+
 	return router;
 };
