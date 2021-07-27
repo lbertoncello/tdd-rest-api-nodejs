@@ -1,7 +1,25 @@
 const express = require('express');
 
+const ForbiddenResourceError = require('../errors/ForbiddenResource');
+
 module.exports = (app) => {
 	const router = express.Router();
+
+	router.param('id', async (req, res, next) => {
+		try {
+			const result = await app.services.transfer.
+				findOne({ id: req.params.id });
+
+			if (result.user_id !== req.user.id) {
+				throw new ForbiddenResourceError();
+			}
+
+			next();
+		} catch (error) {
+			console.error(error);
+			next(error);
+		}
+	});
 
 	const validate = async (req, res, next) => {
 		try {

@@ -368,3 +368,12 @@ describe('Ao remover transferência...', () => {
 		expect(result).toHaveLength(0);
 	});
 });
+
+test('Não deve retornar transferências de outro usuário', async () => {
+	const res = await request(app).
+		get(`${MAIN_ROUTE}/10001`).
+		set('Authorization', `Bearer ${TOKEN}`);
+
+	expect(res.status).toBe(403);
+	expect(res.body.error).toBe('Este recurso não pertecene ao usuário.');
+});
