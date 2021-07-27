@@ -3,6 +3,21 @@ const express = require('express');
 module.exports = (app) => {
 	const router = express.Router();
 
+	const validate = async (req, res, next) => {
+		try {
+			await app.services.transfer.
+				validate({
+					...req.body,
+					user_id: req.user.id,
+				});
+
+			next();
+		} catch (error) {
+			console.error(error);
+			next(error);
+		}
+	};
+
 	router.get('/', async (req, res, next) => {
 		try {
 			const result = await app.services.transfer.
@@ -27,7 +42,7 @@ module.exports = (app) => {
 		}
 	});
 
-	router.post('/', async (req, res, next) => {
+	router.post('/', validate, async (req, res, next) => {
 		try {
 			const transfer = {
 				...req.body,
@@ -43,10 +58,13 @@ module.exports = (app) => {
 		}
 	});
 
-	router.put('/:id', async (req, res, next) => {
+	router.put('/:id', validate, async (req, res, next) => {
 		try {
 			const result = await app.services.transfer.
-				update(req.params.id, req.body);
+				update(req.params.id, {
+					...req.body,
+					user_id: req.user.id,
+				});
 
 			res.status(200).json(result[0]);
 		} catch (error) {
