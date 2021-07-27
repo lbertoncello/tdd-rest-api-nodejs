@@ -7,6 +7,7 @@
     "dev": "nodemon src/server.js",
     "lint": "eslint src/** test/** --fix --ext .js,.jsx",
     "migrate": "knex migrate:latest --env test",
+    "seed": "knex seed:run --env test",
     "test": "jest --verbose=true",
     "secure-mode": "jest --watch --verbose=false --silent",
     "postinstall": "husky install",
