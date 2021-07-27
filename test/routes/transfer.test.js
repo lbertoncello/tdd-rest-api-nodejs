@@ -193,3 +193,12 @@ describe('Ao tentar salvar uma transferência inválida...', () => {
 		),
 	);
 });
+
+test('Deve retornar uma transferência por Id', async () => {
+	const res = await request(app).
+		get(`${MAIN_ROUTE}/10000`).
+		set('Authorization', `Bearer ${TOKEN}`);
+
+	expect(res.status).toBe(200);
+	expect(res.body.description).toBe('Transfer #1');
+});

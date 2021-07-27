@@ -7,6 +7,12 @@ module.exports = (app) => {
 			select();
 	};
 
+	const findOne = (filter = {}) => {
+		return app.db('transfers').
+			where(filter).
+			first();
+	};
+
 	const save = async (transfer) => {
 		/*
 			--- Início Validação ---
@@ -84,6 +90,7 @@ module.exports = (app) => {
 
 	return {
 		find,
+		findOne,
 		save,
 	};
 };
