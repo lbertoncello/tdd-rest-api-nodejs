@@ -219,22 +219,11 @@ describe('Ao calcular o saldo do usuário...', () => {
 		expect(res.body[0].id).toBe(10100);
 		expect(res.body[0].sum).toBe('-100.00');
 		expect(res.body[1].id).toBe(10101);
-		expect(res.body[1].sum).toBe('200.00');
+		expect(res.body[1].sum).toBe('300.00');
 	});
 });
 
 test('Deve calcular saldo das contas do usuário', async () => {
-	await request(app).
-		post(TRANSFER_ROUTE).
-		set('Authorization', `Bearer ${TOKEN}`).
-		send({
-			description: '1',
-			date: new Date(),
-			ammount: 250,
-			acc_ori_id: 10100,
-			acc_dest_id: 10101,
-		});
-
 	const res = await request(app).
 		get(MAIN_ROUTE).
 		set('Authorization', `Bearer ${COMMON_TOKEN}`);
