@@ -8,8 +8,8 @@
     "lint": "eslint src/** test/** --fix --ext .js,.jsx",
     "migrate": "knex migrate:latest --env test",
     "seed": "knex seed:run --env test",
-    "test": "jest --verbose=false",
-    "secure-mode": "jest --watch --verbose=false --silent",
+    "test": "jest --verbose=true --runInBand",
+    "secure-mode": "jest --watch --verbose=false --silent --runInBand",
     "postinstall": "husky install",
     "cz": "cz",
     "cz-init": "commitizen init cz-conventional-changelog --yarn --dev --exact"

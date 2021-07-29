@@ -78,6 +78,7 @@ test(
 
 test('Deve listar apenas as contas do usuário', async () => {
 	await app.db('transactions').del();
+	await app.db('transfers').del();
 	await app.db('accounts').del();
 
 	await app.db('accounts').insert([
