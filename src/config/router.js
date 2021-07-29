@@ -10,6 +10,7 @@ module.exports = (app) => {
 	protectedRouter.use('/account', app.routes.account);
 	protectedRouter.use('/transaction', app.routes.transaction);
 	protectedRouter.use('/transfer', app.routes.transfer);
+	protectedRouter.use('/balance', app.routes.balance);
 
 	app.use(
 		'/v1',
