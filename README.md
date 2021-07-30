@@ -10,44 +10,17 @@ Todas as configurações relacionadas ao banco de dados estão no arquivo `knexf
 
 Inicialmente é necessário executar as migrations e após isso executar o servidor.
 
-### Migrations
-
-#### Executar em ambiente de produção
+### Linux/Mac
 
     yarn migrate-prod
-
-#### Executar em ambiente de desenvolvimento
-
-    yarn migrate-test
-
-### Servidor
-
-#### Linux/Mac
-
-##### Executar em ambiente de produção
-
     yarn start
 
-##### Executar em ambiente de desenvolvimento
+## Testes
 
-    yarn dev
-
-#### Windows
-
-##### Executar em ambiente de produção
-
-    yarn startw
-
-##### Executar em ambiente de desenvolvimento
-
-    yarn devw
-
-### Testes
-
-#### Linux/Mac
+### Linux/Mac
 
     yarn test
 
-#### Windows
+### Windows
 
     yarn testw
