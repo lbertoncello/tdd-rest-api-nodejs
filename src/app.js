@@ -5,7 +5,7 @@ const knex = require('knex');
 const knexfile = require('../knexfile');
 
 // TODO criar chaveamento dinâmico
-app.db = knex(knexfile.test);
+app.db = knex(knexfile[process.env.NODE_ENV.trim()]);
 
 consign({
 	cwd: 'src',
