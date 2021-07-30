@@ -1,3 +1,5 @@
+const { v4: uuid } = require('uuid');
+
 module.exports = (app) => {
 	app.use((req, res) => {
 		res.status(404).json({
@@ -15,10 +17,18 @@ module.exports = (app) => {
 		} else if (name === 'ForbiddenResourceError') {
 			res.status(403).json({ error: message });
 		} else {
-			console.error(message);
-			res.status(500).json({
+			const id = uuid();
+
+			app.log.error({
+				id,
 				name,
 				message,
+				stack,
+			});
+
+			res.status(500).json({
+				id: id,
+				error: 'Internal error',
 			});
 		}
 

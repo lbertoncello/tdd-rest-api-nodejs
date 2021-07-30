@@ -1,11 +1,29 @@
 const express = require('express');
 const consign = require('consign');
-const app = express();
 const knex = require('knex');
+const winston = require('winston');
+
+const app = express();
 const knexfile = require('../knexfile');
 
-// TODO criar chaveamento dinâmico
 app.db = knex(knexfile[process.env.NODE_ENV.trim()]);
+
+app.log = winston.createLogger({
+	level: 'debug',
+	transports: [
+		new winston.transports.Console({
+			format: winston.format.json({ space: 1 }),
+		}),
+		new winston.transports.File({
+			filename: 'logs/erro.log',
+			level: 'warn',
+			format: winston.format.combine(
+				winston.format.timestamp(),
+				winston.format.json({ space: 1 }),
+			),
+		}),
+	],
+});
 
 consign({
 	cwd: 'src',
