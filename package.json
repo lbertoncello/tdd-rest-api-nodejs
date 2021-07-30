@@ -3,13 +3,18 @@
   "version": "1.0.0",
   "private": false,
   "scripts": {
-    "start": "node src/server.js",
-    "dev": "nodemon src/server.js",
+    "start": "NODE_ENV=prod node src/server.js",
+    "dev": "NODE_ENV=test nodemon src/server.js",
+    "startw": "set NODE_ENV=prod && node src/server.js",
+    "devw": "set NODE_ENV=test && nodemon src/server.js",
     "lint": "eslint src/** test/** --fix --ext .js,.jsx",
-    "migrate": "knex migrate:latest --env test",
-    "seed": "knex seed:run --env test",
-    "test": "jest --verbose=true --runInBand",
-    "secure-mode": "jest --watch --verbose=false --silent --runInBand",
+    "migrate-test": "knex migrate:latest --env test",
+    "migrate-prod": "knex migrate:latest --env prod",
+    "seed-test": "knex seed:run --env test",
+    "test": "NODE_ENV=test jest --verbose=true --runInBand --silent --coverage",
+    "testw": "set NODE_ENV=test && jest --verbose=true --runInBand --silent --coverage",
+    "secure-mode": "NODE_ENV=test jest --watch --verbose=false --silent --runInBand",
+    "secure-modew": "set NODE_ENV=test && jest --watch --verbose=false --silent --runInBand",
     "postinstall": "husky install",
     "cz": "cz",
     "cz-init": "commitizen init cz-conventional-changelog --yarn --dev --exact"
@@ -31,22 +36,38 @@
   "dependencies": {
     "bcrypt-nodejs": "^0.0.3",
     "consign": "^0.1.6",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "jwt-simple": "^0.5.6",
     "knex": "^0.95.6",
     "moment": "^2.29.1",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
-    "pg": "^8.6.0"
+    "pg": "^8.6.0",
+    "uuid": "^8.3.2",
+    "winston": "^3.3.3"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn prettier-format && yarn lint"
+      "pre-commit": "yarn prettier-format && yarn lint && yarn test"
     }
   },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "jest": {
+    "coverageThreshold": {
+      "global": {
+        "statements": 80,
+        "branches": 80,
+        "functions": 80,
+        "lines": 80
+      },
+      "./src/services": {
+        "lines": 100
+      }
     }
   }
 }

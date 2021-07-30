@@ -15,4 +15,17 @@ module.exports = {
 			directory: 'src/seeds',
 		},
 	},
+	prod: {
+		client: 'pg',
+		version: '13.3',
+		connection: {
+			host: 'localhost',
+			user: 'admin',
+			password: 'admin',
+			database: 'seubarriga',
+		},
+		migrations: {
+			directory: 'src/migrations',
+		},
+	},
 };
