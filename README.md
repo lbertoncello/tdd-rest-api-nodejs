@@ -1,4 +1,4 @@
-# Múltiplos DBs SQL com Node.js + Sequelize
+# API REST em Node.js aplicando TDD
 
 Este projeto é uma REST API fictícia desenvolvida em Express.js utilizando TDD.
 
